@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Admin Dashboard (Minimalist Slate & Cool Gray Theme)
+   Philosophy: Ultra-clean white surfaces · Refined Slate/Charcoal text
+   Palette: Crisp White (#FFFFFF) + Cool Slate (#F8FAFC) + Soft Pink/Violet Highlights (#8B5CF6 / #EC4899)
+   NO RED COLOR. Soft subtle pink/violet accents only.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Surfaces */
+  --bg-main: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F1F5F9;
+  --bg-accent-light: #FDF2F8;
+  --bg-slate-hover: #F1F5F9;
+
+  /* Slate & Charcoal Palette */
+  --slate-900: #0F172A;
+  --slate-800: #1E293B;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748B;
+  --slate-400: #94A3B8;
+  --slate-300: #CBD5E1;
+  --slate-200: #E2E8F0;
+  --slate-100: #F1F5F9;
+  --slate-50:  #F8FAFC;
+
+  /* Soft Accent Palette (Pink & Violet) */
+  --pink-primary: #EC4899;
+  --pink-dark: #DB2777;
+  --pink-soft: #FCE7F3;
+  --pink-subtle: #FDF2F8;
+  --violet-primary: #8B5CF6;
+  --violet-soft: #F3E8FF;
+
+  /* Gradients */
+  --grad-dark: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  --grad-pink: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+  --grad-pink-soft: linear-gradient(135deg, rgba(236,72,153,0.08) 0%, rgba(139,92,246,0.04) 100%);
+
+  /* Status Colors */
+  --emerald-500: #10B981;
+  --amber-500: #F59E0B;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-pink: 0 4px 14px rgba(236, 72, 153, 0.18);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--slate-700);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Utility Classes */
+.gradient-text-dark {
+  background: var(--grad-dark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-pink {
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #0F172A;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary-dark:hover {
+  background: #1E293B;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-pink-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--grad-pink);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-pink);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+}
+.btn-pink-primary:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.btn-outline-slate {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: #FFFFFF;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.btn-outline-slate:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #0F172A;
+  transform: translateY(-1px);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+.pulse-dot {
+  animation: pulse-soft 2s infinite ease-in-out;
+}

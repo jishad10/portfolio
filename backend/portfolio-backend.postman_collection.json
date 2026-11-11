@@ -1,0 +1,1190 @@
+{
+  "info": {
+    "_postman_id": "portfolio-backend-api-v1-collection-v2",
+    "name": "Portfolio & Dashboard Backend API Collection",
+    "description": "Exhaustive Postman Collection containing pre-configured requests, sample JSON payloads, headers, URL params, and automatic JWT token handling for all 15 modules.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jahidul Islam\",\n  \"email\": \"user@example.com\",\n  \"password\": \"pass12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/register",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User (Auto-saves Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', jsonData.data.user.refreshToken);",
+                  "    console.log('Access token automatically saved to collection variable!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"pass12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/login",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.accessToken);",
+                  "    console.log('Token refreshed and updated!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/refresh-access-token",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "refresh-access-token"]
+            }
+          }
+        },
+        {
+          "name": "Forget Password (Send OTP)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/forget-password",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "forget-password"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP Code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/verify-code",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "verify-code"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"newPassword\": \"newpass12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/reset-password",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "reset-password"]
+            }
+          }
+        },
+        {
+          "name": "Change Password (Authenticated)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"pass12345\",\n  \"newPassword\": \"newpass12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/auth/change-password",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/auth/logout",
+              "host": ["{{baseURL}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. User & Profile Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/user/me",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jahidul Islam\",\n  \"bio\": \"Backend & DevOps Engineer | AI Researcher\",\n  \"phone\": \"+8801700000000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/user/me",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "me"]
+            }
+          }
+        },
+        {
+          "name": "Delete Own Account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/user/me",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "me"]
+            }
+          }
+        },
+        {
+          "name": "Upload Profile Avatar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "profileImage", "type": "file", "src": [] }]
+            },
+            "url": {
+              "raw": "{{baseURL}}/user/upload-avatar",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "upload-avatar"]
+            }
+          }
+        },
+        {
+          "name": "Upload Multiple Avatars",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "multiProfileImage", "type": "file", "src": [] }]
+            },
+            "url": {
+              "raw": "{{baseURL}}/user/upload-multiple-avatar",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "upload-multiple-avatar"]
+            }
+          }
+        },
+        {
+          "name": "Upload User PDF / Resume",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "userPDF", "type": "file", "src": [] }]
+            },
+            "url": {
+              "raw": "{{baseURL}}/user/upload-file",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "upload-file"]
+            }
+          }
+        },
+        {
+          "name": "Admin: Get All Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/user/all-users",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "all-users"]
+            }
+          }
+        },
+        {
+          "name": "Admin: Get All Admins",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/user/all-admins",
+              "host": ["{{baseURL}}"],
+              "path": ["user", "all-admins"]
+            }
+          }
+        },
+        {
+          "name": "Admin: Get User By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/user/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["user", ":id"],
+              "variable": [{ "key": "id", "value": "<USER_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Hero Section",
+      "item": [
+        {
+          "name": "Get Hero Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/hero",
+              "host": ["{{baseURL}}"],
+              "path": ["hero"]
+            }
+          }
+        },
+        {
+          "name": "Update Hero Section (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"logoInitials\": \"JI\",\n  \"logoTitle\": \"Jahidul\",\n  \"logoSublabel\": \"DevOps & AI\",\n  \"navCtaText\": \"Hire Me\",\n  \"navCtaLink\": \"#contact\",\n  \"statusBadgeText\": \"Available for Full-Time & Research Roles\",\n  \"isAvailable\": true,\n  \"headlinePart1\": \"Backend & \",\n  \"headlineAccent1\": \"DevOps\",\n  \"headlinePart2\": \"Engineer + \",\n  \"headlineAccent2\": \"AI\",\n  \"headlinePart3\": \" Researcher\",\n  \"bioText\": \"Architecting & shipping scalable cloud-native systems — REST APIs, Docker deployments, AWS infrastructure, and CI/CD pipelines. Actively researching AI & Deep Learning.\",\n  \"ctaPrimaryText\": \"View Projects\",\n  \"ctaPrimaryLink\": \"#projects\",\n  \"ctaSecondaryText\": \"Resume\",\n  \"resumeLink\": \"/resume.pdf\",\n  \"ctaTertiaryText\": \"GitHub\",\n  \"githubLink\": \"https://github.com/\",\n  \"stat1Value\": \"3+\",\n  \"stat1Label\": \"Years Experience\",\n  \"stat2Value\": \"15+\",\n  \"stat2Label\": \"Projects Shipped\",\n  \"stat3Value\": \"1\",\n  \"stat3Label\": \"AI Publication\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/hero",
+              "host": ["{{baseURL}}"],
+              "path": ["hero"]
+            }
+          }
+        },
+        {
+          "name": "Reset Hero Section to Default (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/hero",
+              "host": ["{{baseURL}}"],
+              "path": ["hero"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. About Section",
+      "item": [
+        {
+          "name": "Get About Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/about",
+              "host": ["{{baseURL}}"],
+              "path": ["about"]
+            }
+          }
+        },
+        {
+          "name": "Update About Section (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionLabel\": \"About Me\",\n  \"sectionHeadingPrefix\": \"Building Systems That \",\n  \"sectionHeadingAccent\": \"Scale\",\n  \"sectionHeadingSuffix\": \" & Perform\",\n  \"profileInitials\": \"JI\",\n  \"profileName\": \"Jahidul Islam\",\n  \"profileTitle\": \"DevOps & AI Research Engineer\",\n  \"profileLocation\": \"Bangladesh 🇧🇩\",\n  \"isVerified\": true,\n  \"bioParagraph1\": \"I'm a Backend & DevOps Engineer specializing in architecting resilient, high-concurrency cloud systems.\",\n  \"bioParagraph2\": \"Alongside production engineering, I actively conduct research in Artificial Intelligence and Deep Learning.\",\n  \"principles\": [\n    { \"title\": \"High-Concurrency APIs\", \"subtitle\": \"FastAPI, Go & Node.js REST / gRPC\" },\n    { \"title\": \"Infrastructure as Code\", \"subtitle\": \"Docker, AWS ECS/EC2 & Terraform\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/about",
+              "host": ["{{baseURL}}"],
+              "path": ["about"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. My Story Timeline",
+      "item": [
+        {
+          "name": "Get Story Timeline",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/mystory",
+              "host": ["{{baseURL}}"],
+              "path": ["mystory"]
+            }
+          }
+        },
+        {
+          "name": "Add Milestone (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year\": \"2025\",\n  \"title\": \"Cloud Native Service Mesh\",\n  \"story\": \"Architected microservice mesh using Docker containerization & Kubernetes clusters.\",\n  \"order\": 7\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/mystory/milestone",
+              "host": ["{{baseURL}}"],
+              "path": ["mystory", "milestone"]
+            }
+          }
+        },
+        {
+          "name": "Update Milestone (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Milestone Title\",\n  \"story\": \"Updated milestone narrative text...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/mystory/milestone/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["mystory", "milestone", ":id"],
+              "variable": [{ "key": "id", "value": "<MILESTONE_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Milestone (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/mystory/milestone/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["mystory", "milestone", ":id"],
+              "variable": [{ "key": "id", "value": "<MILESTONE_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Projects",
+      "item": [
+        {
+          "name": "Get Project Section Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/projects/header",
+              "host": ["{{baseURL}}"],
+              "path": ["projects", "header"]
+            }
+          }
+        },
+        {
+          "name": "Update Project Section Header (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionLabel\": \"Projects\",\n  \"sectionHeadingPrefix\": \"Featured \",\n  \"sectionHeadingAccent\": \"Engineering\",\n  \"sectionHeadingSuffix\": \" Work\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/projects/header",
+              "host": ["{{baseURL}}"],
+              "path": ["projects", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/projects",
+              "host": ["{{baseURL}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "Get Project By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/projects/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["projects", ":id"],
+              "variable": [{ "key": "id", "value": "<PROJECT_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Create New Project (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI Log Anomaly Ingestion Engine\",\n  \"category\": \"DevOps & AI\",\n  \"description\": \"Real-time high-throughput log anomaly engine built with Kafka, PyTorch autoencoders & Docker.\",\n  \"metric\": \"50k Logs/Sec\",\n  \"stars\": 85,\n  \"size\": \"large\",\n  \"archSnippet\": \"Log Pipeline -> Kafka Queue -> PyTorch Model -> Grafana Dashboard\",\n  \"achievements\": [\"Detects server intrusion anomalies with 98.4% precision.\"],\n  \"tags\": [\"Python\", \"Kafka\", \"PyTorch\", \"Docker\", \"AWS\"],\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/projects",
+              "host": ["{{baseURL}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "Update Project (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stars\": 120,\n  \"metric\": \"60k Logs/Sec\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/projects/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["projects", ":id"],
+              "variable": [{ "key": "id", "value": "<PROJECT_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Project (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/projects/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["projects", ":id"],
+              "variable": [{ "key": "id", "value": "<PROJECT_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Skills",
+      "item": [
+        {
+          "name": "Get Skills Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/skills",
+              "host": ["{{baseURL}}"],
+              "path": ["skills"]
+            }
+          }
+        },
+        {
+          "name": "Add Skill Category (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryName\": \"Cloud Security\",\n  \"icon\": \"Shield\",\n  \"skills\": [\n    { \"name\": \"JWT Auth & OAuth2\", \"level\": 94, \"exp\": \"3+ Yrs\", \"tag\": \"Primary\" },\n    { \"name\": \"Helmet & XSS Clean\", \"level\": 90, \"exp\": \"3+ Yrs\", \"tag\": \"Core\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/skills/category",
+              "host": ["{{baseURL}}"],
+              "path": ["skills", "category"]
+            }
+          }
+        },
+        {
+          "name": "Delete Skill Category (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/skills/category/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["skills", "category", ":id"],
+              "variable": [{ "key": "id", "value": "<CATEGORY_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Experience",
+      "item": [
+        {
+          "name": "Get Experience Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/experience/header",
+              "host": ["{{baseURL}}"],
+              "path": ["experience", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All Experiences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/experience",
+              "host": ["{{baseURL}}"],
+              "path": ["experience"]
+            }
+          }
+        },
+        {
+          "name": "Get Experience By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/experience/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["experience", ":id"],
+              "variable": [{ "key": "id", "value": "<EXPERIENCE_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Experience Item (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Senior Systems Architect\",\n  \"company\": \"Cloud Scale Tech\",\n  \"period\": \"2024 — Present\",\n  \"type\": \"Full-time\",\n  \"location\": \"Remote\",\n  \"description\": \"Leading microservices architecture, AWS infrastructure automation, and team mentorship.\",\n  \"bullets\": [\"Designed high-availability PostgreSQL clusters and Redis caching topology.\"],\n  \"tags\": [\"Node.js\", \"AWS\", \"Docker\", \"Redis\", \"PostgreSQL\"],\n  \"accentColor\": \"#3CBBB1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/experience",
+              "host": ["{{baseURL}}"],
+              "path": ["experience"]
+            }
+          }
+        },
+        {
+          "name": "Delete Experience Item (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/experience/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["experience", ":id"],
+              "variable": [{ "key": "id", "value": "<EXPERIENCE_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Research",
+      "item": [
+        {
+          "name": "Get Research Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/research",
+              "host": ["{{baseURL}}"],
+              "path": ["research"]
+            }
+          }
+        },
+        {
+          "name": "Add Research Paper (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paperTitle\": \"Lightweight Attention Mechanisms in Edge Computer Vision Models\",\n  \"paperVenue\": \"IEEE International Joint Conference on Neural Networks (IJCNN)\",\n  \"paperYear\": \"2025\",\n  \"doiLink\": \"https://doi.org/10.1109/ijcnn.2025.100\",\n  \"contributions\": [\"Optimized memory bandwidth consumption on embedded CUDA platforms by 35%.\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/research/paper",
+              "host": ["{{baseURL}}"],
+              "path": ["research", "paper"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Certifications",
+      "item": [
+        {
+          "name": "Get Certification Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/certifications/header",
+              "host": ["{{baseURL}}"],
+              "path": ["certifications", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All Certifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/certifications",
+              "host": ["{{baseURL}}"],
+              "path": ["certifications"]
+            }
+          }
+        },
+        {
+          "name": "Create Certification (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Certified Kubernetes Administrator (CKA)\",\n  \"issuer\": \"CNCF & Linux Foundation\",\n  \"year\": \"Issued 2024 · Active\",\n  \"abbr\": \"CKA\",\n  \"color\": \"#326CE5\",\n  \"verifyLink\": \"https://www.cncf.io/\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/certifications",
+              "host": ["{{baseURL}}"],
+              "path": ["certifications"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Services",
+      "item": [
+        {
+          "name": "Get Service Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/services/header",
+              "host": ["{{baseURL}}"],
+              "path": ["services", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/services",
+              "host": ["{{baseURL}}"],
+              "path": ["services"]
+            }
+          }
+        },
+        {
+          "name": "Create Service (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI Model Inference & API Integration\",\n  \"badge\": \"AI & MLOps\",\n  \"description\": \"Deploying PyTorch and Computer Vision neural models to production FastAPI & Docker endpoints.\",\n  \"deliverables\": [\n    \"Model quantization and ONNX optimization\",\n    \"FastAPI endpoint creation with rate-limiting & logging\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/services",
+              "host": ["{{baseURL}}"],
+              "path": ["services"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Testimonials",
+      "item": [
+        {
+          "name": "Get Testimonial Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/testimonials/header",
+              "host": ["{{baseURL}}"],
+              "path": ["testimonials", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/testimonials",
+              "host": ["{{baseURL}}"],
+              "path": ["testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Create Testimonial (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alex Rivera\",\n  \"role\": \"VP of Engineering\",\n  \"company\": \"ScaleUp Cloud\",\n  \"quote\": \"Jahidul is one of the sharpest backend & DevOps engineers I have collaborated with. Highly recommended.\",\n  \"rating\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/testimonials",
+              "host": ["{{baseURL}}"],
+              "path": ["testimonials"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "13. FAQ",
+      "item": [
+        {
+          "name": "Get FAQ Header",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/faq/header",
+              "host": ["{{baseURL}}"],
+              "path": ["faq", "header"]
+            }
+          }
+        },
+        {
+          "name": "Get All FAQs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/faq",
+              "host": ["{{baseURL}}"],
+              "path": ["faq"]
+            }
+          }
+        },
+        {
+          "name": "Create FAQ Item (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Engagements\",\n  \"question\": \"What is your typical turnaround time for backend architecture reviews?\",\n  \"answer\": \"Usually 3 to 5 business days for comprehensive security, schema, and queue performance audits.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/faq",
+              "host": ["{{baseURL}}"],
+              "path": ["faq"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "14. GitHub Activity",
+      "item": [
+        {
+          "name": "Get GitHub Activity",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/github",
+              "host": ["{{baseURL}}"],
+              "path": ["github"]
+            }
+          }
+        },
+        {
+          "name": "Update GitHub Metrics (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"jahidul-islam\",\n  \"totalCommits\": \"1,450+\",\n  \"publicRepos\": \"48\",\n  \"starsEarned\": \"420+\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/github",
+              "host": ["{{baseURL}}"],
+              "path": ["github"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "15. Contact Messages",
+      "item": [
+        {
+          "name": "Get Contact Config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/contact/config",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "config"]
+            }
+          }
+        },
+        {
+          "name": "Submit Contact Form (Public)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Recruiter Jane\",\n  \"email\": \"jane@techrecruiter.com\",\n  \"subject\": \"Senior Backend Role Inquiry\",\n  \"message\": \"Hi Jahidul, we loved your portfolio and would like to discuss a remote backend engineering role!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/contact/messages",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Get All Contact Messages (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/contact/messages",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Get Contact Message By ID (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/contact/messages/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "messages", ":id"],
+              "variable": [{ "key": "id", "value": "<MESSAGE_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Update Message Status (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"read\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/contact/messages/:id/status",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "messages", ":id", "status"],
+              "variable": [{ "key": "id", "value": "<MESSAGE_ID>" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Contact Message (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/contact/messages/:id",
+              "host": ["{{baseURL}}"],
+              "path": ["contact", "messages", ":id"],
+              "variable": [{ "key": "id", "value": "<MESSAGE_ID>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "16. Global Settings",
+      "item": [
+        {
+          "name": "Get Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/settings",
+              "host": ["{{baseURL}}"],
+              "path": ["settings"]
+            }
+          }
+        },
+        {
+          "name": "Update Settings (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"siteTitle\": \"Jahidul Islam — Backend & DevOps Engineer | AI Researcher\",\n  \"metaDescription\": \"Portfolio of Jahidul Islam specializing in scalable cloud-native architectures, FastAPI microservices, Docker/K8s deployments, AWS infrastructure, and AI research.\",\n  \"keywords\": \"Backend Engineer, DevOps, AWS, FastAPI, Docker, Kubernetes, AI Researcher\",\n  \"linkedinUrl\": \"https://linkedin.com/in/jahidul-dev\",\n  \"githubUrl\": \"https://github.com/jahidul-dev\"\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/settings",
+              "host": ["{{baseURL}}"],
+              "path": ["settings"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

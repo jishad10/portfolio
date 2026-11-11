@@ -1,0 +1,668 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Jahidul Islam Portfolio
+   Target: Recruiters · CTOs · Academics · Scholarship Committees
+   Philosophy: Clean light surfaces · Refined Cyan accents · Professional elegance
+   Inspired by: Cyan Presentation Template — minimalist, geometric, confident
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ── Background Hierarchy (light mode — crisp slate backdrop & white surfaces) ── */
+  --bg-0:   #F8FAFC;    /* primary slate canvas — hero, odd sections */
+  --bg-1:   #F1F5F9;    /* alternate sections — distinct soft slate fill */
+  --bg-2:   #E2E8F0;    /* deeper alternate / footer area */
+  --bg-3:   #FFFFFF;    /* cards, panels (crisp pure white surface) */
+  --bg-4:   #E2E8F0;    /* elevated fills, hover backgrounds */
+
+  /* ── Dark Surface (for hero overlay, footer, featured sections) ────────── */
+  --dark-surface:   #1E2D3D;
+  --dark-surface-2: #243447;
+  --dark-surface-3: #2C3E50;
+
+  /* ── Cyan — Primary Accent (high-contrast cyan-teal for light mode) ────────── */
+  --cyan-300: #5EEAD4;
+  --cyan-400: #2DD4BF;
+  --cyan-500: #0D9488;   /* PRIMARY — Rich Deep Teal-Cyan for light mode text/pills */
+  --cyan-600: #0F766E;
+  --cyan-700: #115E59;
+
+  /* ── Slate — Secondary Accent (charcoal depth, professional authority) ─── */
+  --slate-300: #94A3B8;
+  --slate-400: #64748B;
+  --slate-500: #334155;  /* SECONDARY */
+  --slate-600: #1E293B;
+
+  /* ── Teal — Tertiary (research, academic, balance) ─────────────────────── */
+  --teal-300: #5EEAD4;
+  --teal-400: #2DD4BF;
+  --teal-500: #0D9488;   /* TERTIARY */
+  --teal-600: #0F766E;
+
+  /* ── Amber — Warm Accent (awards, highlights, energy) ──────────────────── */
+  --amber-400: #FBBF24;
+  --amber-500: #D97706;
+
+  /* ── Emerald — Success ─────────────────────────────────────────────────── */
+  --emerald-400: #34D399;
+  --emerald-500: #059669;
+
+  /* ── Indigo — Accent (for variety in some sections) ────────────────────── */
+  --indigo-300: #A5B4FC;
+  --indigo-400: #818CF8;
+  --indigo-500: #4F46E5;
+  --indigo-600: #3730A3;
+
+  /* ── Semantic Aliases ───────────────────────────────────────────────────── */
+  --accent-primary:   var(--cyan-500);
+  --accent-secondary: var(--slate-500);
+  --accent-tertiary:  var(--teal-500);
+  --accent-warm:      var(--amber-500);
+  --accent-success:   var(--emerald-500);
+
+  /* ── Text Hierarchy (high-contrast deep text on light backgrounds) ─────── */
+  --text-primary:  #0F172A;    /* headings — crisp deep slate navy */
+  --text-body:     #334155;    /* body — dark slate (sharp & highly legible) */
+  --text-muted:    #64748B;    /* captions & secondary info — clear slate gray */
+  --text-faint:    #94A3B8;    /* placeholder, disabled text */
+  --text-accent:   var(--cyan-600);   /* inline emphasis */
+  --text-code:     var(--teal-600);   /* monospace highlights */
+  --text-on-dark:  #F0F6FF;   /* text on dark surfaces */
+  --text-on-dark-body: #B8C9E0;
+  --text-on-dark-muted: #6B8AAD;
+
+  /* ── Border System (crisp, structured light borders) ────────────────────── */
+  --border-0:      #E2E8F0;   /* subtle divider */
+  --border-1:      #CBD5E1;   /* default card/input border */
+  --border-2:      #94A3B8;   /* hover border */
+  --border-3:      var(--cyan-500);   /* active / focus */
+  --border-accent: rgba(13, 148, 136, 0.35);
+  --border-warm:   rgba(217, 119, 6, 0.30);
+
+  /* Legacy aliases (for backward compat with existing components) */
+  --color-bg:        var(--bg-0);
+  --color-surface:   var(--bg-1);
+  --color-surface-2: var(--bg-3);
+  --color-border:    var(--border-1);
+  --color-accent:    var(--cyan-500);
+  --color-accent-2:  var(--teal-500);
+  --color-accent-3:  var(--amber-500);
+  --color-text:      var(--text-primary);
+  --color-muted:     var(--text-muted);
+  --color-highlight: var(--cyan-500);
+
+  /* ── Gradient Library ───────────────────────────────────────────────────── */
+  /* Primary: Cyan → Teal (hero, CTAs, key elements) */
+  --grad-primary:       linear-gradient(135deg, #0D9488 0%, #0891B2 50%, #0284C7 100%);
+  /* Academic: Slate → Teal (research, publications) */
+  --grad-academic:      linear-gradient(135deg, #1E293B 0%, #0D9488 100%);
+  /* Technical: Teal → Cyan (devops, backend) */
+  --grad-technical:     linear-gradient(135deg, #0F766E 0%, #0891B2 100%);
+  /* Warm: Amber → Orange (badges, awards) */
+  --grad-warm:          linear-gradient(135deg, #D97706 0%, #EA580C 100%);
+  /* Subtle surface gradient for cards */
+  --grad-surface-cyan:  linear-gradient(135deg, rgba(13,148,136,0.08) 0%, rgba(8,145,178,0.03) 100%);
+  --grad-surface-teal:  linear-gradient(135deg, rgba(15,118,110,0.08) 0%, rgba(13,148,136,0.03) 100%);
+  --grad-surface-dark:  linear-gradient(135deg, #1E2D3D 0%, #2C3E50 100%);
+
+  /* ── Shadows (crisp, natural structural shadows for light mode) ────────── */
+  --shadow-sm:     0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md:     0 4px 16px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
+  --shadow-lg:     0 12px 40px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.06);
+  --shadow-xl:     0 20px 60px rgba(15,23,42,0.14), 0 8px 20px rgba(15,23,42,0.08);
+  --shadow-cyan:   0 8px 30px rgba(13,148,136,0.25), 0 2px 8px rgba(13,148,136,0.12);
+  --shadow-card:   0 4px 16px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.04);
+  --shadow-card-hover: 0 12px 32px rgba(15,23,42,0.10), 0 4px 12px rgba(13,148,136,0.12);
+
+  /* ── Radii ──────────────────────────────────────────────────────────────── */
+  --r-xs:  4px;
+  --r-sm:  8px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-xl:  20px;
+  --r-2xl: 28px;
+  --r-full: 9999px;
+
+  /* Aliases */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+
+  /* ── Motion ─────────────────────────────────────────────────────────────── */
+  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-back:    cubic-bezier(0.36, 0, 0.66, -0.56);
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+}
+
+/* ── Dark Mode Overrides (html[data-theme="dark"] & .dark) ─────────────────── */
+html[data-theme="dark"],
+.dark {
+  /* Background Hierarchy */
+  --bg-0:   #0B1120;    /* Primary dark canvas background */
+  --bg-1:   #111827;    /* Alternate dark section background */
+  --bg-2:   #070C15;    /* Deeper dark background / footer area */
+  --bg-3:   #1F2937;    /* Cards & panels surface (dark slate) */
+  --bg-4:   #374151;    /* Elevated fills, inputs, hover backgrounds */
+
+  /* Dark Surface Overrides */
+  --dark-surface:   #0F172A;
+  --dark-surface-2: #1E293B;
+  --dark-surface-3: #334155;
+
+  /* Accent Overrides for Dark Mode */
+  --cyan-300: #7FE3DA;
+  --cyan-400: #56CFC5;
+  --cyan-500: #3CBBB1;   /* Cyan-500 glow for dark mode */
+  --cyan-600: #2FA8A0;
+
+  /* Text Hierarchy */
+  --text-primary:  #F9FAFB;    /* Headings — crisp near-white */
+  --text-body:     #D1D5DB;    /* Body text — light gray */
+  --text-muted:    #9CA3AF;    /* Captions & secondary info — slate gray */
+  --text-faint:    #4B5563;    /* Disabled / subtle text */
+  --text-accent:   var(--cyan-400);   /* Inline emphasis */
+  --text-code:     var(--cyan-300);
+
+  /* Border System */
+  --border-0:      #111827;
+  --border-1:      rgba(255, 255, 255, 0.12);   /* Clean subtle light border on dark */
+  --border-2:      rgba(60, 187, 177, 0.40);    /* Hover border glow */
+  --border-3:      var(--cyan-500);
+
+  /* Shadows */
+  --shadow-sm:         0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-md:         0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg:         0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-card:       0 4px 20px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 16px 36px rgba(60, 187, 177, 0.18), 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  /* Dot & Line Grid Opacities */
+  --dot-grid-opacity: 0.15;
+  --line-grid-opacity: 0.18;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-0);
+  color: var(--text-body);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+p { color: var(--text-body); }
+
+a { color: inherit; text-decoration: none; }
+
+code, pre, .mono {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text-code);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-1); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--cyan-500), var(--cyan-700));
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--cyan-600); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SELECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
+::selection { background: rgba(60, 187, 177, 0.20); color: #1A202C; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GRADIENT TEXT UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+.gradient-text {
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-warm {
+  background: var(--grad-warm);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-academic {
+  background: var(--grad-academic);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYOUT UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+.section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GEOMETRIC ACCENT ELEMENTS (Cyan template inspired)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Cyan accent bar — top of cards */
+.accent-bar-top {
+  position: relative;
+}
+.accent-bar-top::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 3px;
+  background: var(--grad-primary);
+  border-radius: 0 0 2px 0;
+}
+
+/* Cyan corner accent */
+.accent-corner {
+  position: relative;
+}
+.accent-corner::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: var(--cyan-500);
+  opacity: 0.06;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+/* Section divider — thin cyan line with fade */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-1) 20%, var(--border-1) 80%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION TYPOGRAPHY COMPONENTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Section eyebrow label */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan-600);
+  background: rgba(60, 187, 177, 0.08);
+  border: 1px solid rgba(60, 187, 177, 0.18);
+  padding: 5px 14px;
+  border-radius: var(--r-full);
+  margin-bottom: 18px;
+}
+.section-label::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--cyan-500);
+  animation: pulse-dot 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Section heading */
+.section-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  letter-spacing: -0.03em;
+}
+
+/* Section sub-heading */
+.section-subheading {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.85;
+}
+
+/* Dark section text overrides */
+.dark-section .section-label {
+  color: var(--cyan-400);
+  background: rgba(60, 187, 177, 0.12);
+  border-color: rgba(60, 187, 177, 0.25);
+}
+.dark-section .section-heading {
+  color: var(--text-on-dark);
+}
+.dark-section .section-subheading {
+  color: var(--text-on-dark-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--bg-3);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--duration-base) var(--ease-out-expo),
+    transform    var(--duration-base) var(--ease-out-expo),
+    box-shadow   var(--duration-base) var(--ease-out-expo);
+}
+.card:hover {
+  border-color: var(--border-2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTON SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Primary — gradient fill */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  background: var(--grad-primary);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  border-radius: var(--r-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition:
+    opacity       var(--duration-fast),
+    transform     var(--duration-base) var(--ease-out-expo),
+    box-shadow    var(--duration-base);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-cyan);
+  opacity: 0.92;
+}
+
+/* Outline — transparent with border */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text-body);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-1);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color var(--duration-base),
+    background   var(--duration-base),
+    color        var(--duration-base),
+    transform    var(--duration-base) var(--ease-out-expo);
+}
+.btn-outline:hover {
+  border-color: var(--cyan-500);
+  background: rgba(60, 187, 177, 0.06);
+  color: var(--cyan-600);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAG / BADGE SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: rgba(60, 187, 177, 0.08);
+  color: var(--cyan-700);
+  border: 1px solid rgba(60, 187, 177, 0.18);
+  border-radius: var(--r-full);
+  font-size: 0.74rem;
+  font-weight: 500;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.02em;
+}
+
+.tag-indigo {
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--indigo-600);
+  border-color: rgba(99, 102, 241, 0.18);
+}
+
+.tag-teal {
+  background: rgba(20, 184, 166, 0.08);
+  color: var(--teal-600);
+  border-color: rgba(20, 184, 166, 0.18);
+}
+
+.tag-amber {
+  background: rgba(245, 158, 11, 0.08);
+  color: #B45309;
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+.tag-emerald {
+  background: rgba(16, 185, 129, 0.08);
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.18);
+}
+
+.tag-slate {
+  background: rgba(51, 65, 85, 0.06);
+  color: var(--slate-400);
+  border-color: rgba(51, 65, 85, 0.14);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLASS MORPHISM (for dark sections — footer, hero overlay)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.glass {
+  background: rgba(30, 45, 61, 0.92);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GRADIENT BORDER UTILITY
+   ═══════════════════════════════════════════════════════════════════════════ */
+.gradient-border {
+  position: relative;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad-primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--border-1) 10%,
+    var(--cyan-500) 50%,
+    var(--border-1) 90%,
+    transparent 100%);
+  transform: translateX(-50%);
+}
+.timeline-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--cyan-500);
+  border: 3px solid var(--bg-0);
+  box-shadow: 0 0 0 2px var(--cyan-500), 0 0 12px rgba(60,187,177,0.35);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 28s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.65); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-10px) rotate(0.5deg); }
+  66%       { transform: translateY(-5px) rotate(-0.5deg); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+/* Planetary Orbit Animations */
+@keyframes orbit-rotate-1 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbit-rotate-2 {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes counter-rotate-1 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes counter-rotate-2 {
+  from { transform: rotate(-360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes core-pulse-glow {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.55;
+    box-shadow: 0 0 40px rgba(60, 187, 177, 0.3), 0 0 80px rgba(60, 187, 177, 0.15);
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
+    box-shadow: 0 0 65px rgba(60, 187, 177, 0.5), 0 0 120px rgba(60, 187, 177, 0.3);
+  }
+}
+
+@keyframes orbit-ring-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE UTILITY
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .section-container { padding: 0 18px; }
+  .timeline-line { left: 20px !important; }
+  .section-heading { font-size: 1.75rem; }
+}
+@media (max-width: 480px) {
+  .section-container { padding: 0 14px; }
+}
